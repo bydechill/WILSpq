@@ -1,429 +1,847 @@
-<script>
-    // ===== LISTA DE CANCIONES =====
-    const songsList = [
-        {
-            title: "My Lord, What a Morning",
-            artist: "Blind Joe Taggart",
-            url: "https://archive.org/download/LibreMusicCollection_202007/BlindJoeTaggart-MyLordWhatAMorning.mp3",
-            duration: "2:45"
-        },
-        {
-            title: "Sweeter As The Days Go By",
-            artist: "Blind Willie Johnson",
-            url: "https://archive.org/download/LibreMusicCollection_202007/BlindWillieJohnson-SweeterAsTheDaysGoBy.mp3",
-            duration: "3:12"
-        },
-        {
-            title: "Dark Was the Night, Cold Was the Ground",
-            artist: "Blind Willie Johnson",
-            url: "https://archive.org/download/LibreMusicCollection_202007/BlindWillieJohnson-DarkWasTheNightColdWasTheGround.mp3",
-            duration: "3:05"
-        },
-        {
-            title: "John the Revelator",
-            artist: "Blind Willie Johnson",
-            url: "https://archive.org/download/LibreMusicCollection_202007/BlindWillieJohnson-JohnTheRevelator.mp3",
-            duration: "3:19"
-        },
-        {
-            title: "God Moves on the Water",
-            artist: "Blind Willie Johnson",
-            url: "https://archive.org/download/LibreMusicCollection_202007/BlindWillieJohnson-GodMovesOnTheWater.mp3",
-            duration: "2:58"
-        },
-        {
-            title: "If I Had My Way I'd Tear the Building Down",
-            artist: "Blind Willie Johnson",
-            url: "https://archive.org/download/LibreMusicCollection_202007/BlindWillieJohnson-IfIHadMyWayIdTearTheBuildingDown.mp3",
-            duration: "3:02"
-        },
-        {
-            title: "Pasitos Para Bailar",
-            artist: "Agua Marina",
-            url: "https://archive.org/download/agua-marina-exitos-de-oro-2014-942/Agua%20Marina%20-%20%C3%89xitos%20De%20Oro%20%282014%29%20-Xendra%20Music%20%2BDesconocido/14.%20Pasitos%20para%20Bailar.mp3",
-            duration: "2:50"
-        },
-        {
-            title: "I'm a Soldier in the Army of the Lord",
-            artist: "Blind Joe Taggart",
-            url: "https://archive.org/download/LibreMusicCollection_202007/BlindJoeTaggart-ImASoldierInTheArmyOfTheLord.mp3",
-            duration: "2:38"
-        },
-        {
-            title: "The Soul of a Man",
-            artist: "Blind Willie Johnson",
-            url: "https://archive.org/download/LibreMusicCollection_202007/BlindWillieJohnson-TheSoulOfAMan.mp3",
-            duration: "3:07"
-        },
-        {
-            title: "It's Nobody's Fault but Mine",
-            artist: "Blind Willie Johnson",
-            url: "https://archive.org/download/LibreMusicCollection_202007/BlindWillieJohnson-ItsNobodySFaultButMine.mp3",
-            duration: "3:15"
-        },
-        {
-            title: "Mother's Children Have a Hard Time",
-            artist: "Blind Willie Johnson",
-            url: "https://archive.org/download/LibreMusicCollection_202007/BlindWillieJohnson-MothersChildrenHaveAHardTime.mp3",
-            duration: "3:00"
-        },
-        {
-            title: "Jesus Make Up My Dying Bed",
-            artist: "Blind Joe Taggart",
-            url: "https://archive.org/download/LibreMusicCollection_202007/BlindJoeTaggart-JesusMakeUpMyDyingBed.mp3",
-            duration: "2:55"
-        },
-        {
-            title: "Bye and Bye I'm Goin' to See the King",
-            artist: "Blind Joe Taggart",
-            url: "https://archive.org/download/LibreMusicCollection_202007/BlindJoeTaggart-ByeAndByeImGoinToSeeTheKing.mp3",
-            duration: "2:40"
-        },
-        {
-            title: "Lord I Just Can't Keep From Crying",
-            artist: "Blind Willie Johnson",
-            url: "https://archive.org/download/LibreMusicCollection_202007/BlindWillieJohnson-LordIJustCantKeepFromCrying.mp3",
-            duration: "3:10"
-        },
-        {
-            title: "You'll Need Somebody on Your Bond",
-            artist: "Blind Willie Johnson",
-            url: "https://archive.org/download/LibreMusicCollection_202007/BlindWillieJohnson-YoullNeedSomebodyOnYourBond.mp3",
-            duration: "2:52"
-        },
-        {
-            title: "I Know His Blood Can Make Me Whole",
-            artist: "Blind Willie Johnson",
-            url: "https://archive.org/download/LibreMusicCollection_202007/BlindWillieJohnson-IKnowHisBloodCanMakeMeWhole.mp3",
-            duration: "2:57"
-        },
-        {
-            title: "Go with Me to That Land",
-            artist: "Blind Joe Taggart",
-            url: "https://archive.org/download/LibreMusicCollection_202007/BlindJoeTaggart-GoWithMeToThatLand.mp3",
-            duration: "2:48"
-        },
-        {
-            title: "I Was Born to Preach the Gospel",
-            artist: "Blind Willie Johnson",
-            url: "https://archive.org/download/LibreMusicCollection_202007/BlindWillieJohnson-IWasBornToPreachTheGospel.mp3",
-            duration: "3:03"
-        },
-        {
-            title: "Keep Your Lamp Trimmed and Burning",
-            artist: "Blind Willie Johnson",
-            url: "https://archive.org/download/LibreMusicCollection_202007/BlindWillieJohnson-KeepYourLampTrimmedAndBurning.mp3",
-            duration: "2:59"
-        },
-        {
-            title: "Can't Nobody Hide from God",
-            artist: "Blind Willie Johnson",
-            url: "https://archive.org/download/LibreMusicCollection_202007/BlindWillieJohnson-CantNobodyHideFromGod.mp3",
-            duration: "3:06"
-        },
-        {
-            title: "Take Your Burden to the Lord",
-            artist: "Blind Joe Taggart",
-            url: "https://archive.org/download/LibreMusicCollection_202007/BlindJoeTaggart-TakeYourBurdenToTheLord.mp3",
-            duration: "2:53"
-        },
-        {
-            title: "When the War Was On",
-            artist: "Blind Willie Johnson",
-            url: "https://archive.org/download/LibreMusicCollection_202007/BlindWillieJohnson-WhenTheWarWasOn.mp3",
-            duration: "3:11"
-        },
-        {
-            title: "Church I'm Fully Saved Today",
-            artist: "Blind Willie Johnson",
-            url: "https://archive.org/download/LibreMusicCollection_202007/BlindWillieJohnson-ChurchImFullySavedToday.mp3",
-            duration: "2:54"
-        },
-        {
-            title: "I'm Gonna Run to the City of Refuge",
-            artist: "Blind Willie Johnson",
-            url: "https://archive.org/download/LibreMusicCollection_202007/BlindWillieJohnson-ImGonnaRunToTheCityOfRefuge.mp3",
-            duration: "3:08"
-        },
-        {
-            title: "Let Your Light Shine on Me",
-            artist: "Blind Willie Johnson",
-            url: "https://archive.org/download/LibreMusicCollection_202007/BlindWillieJohnson-LetYourLightShineOnMe.mp3",
-            duration: "2:56"
-        },
-        {
-            title: "God Don't Never Change",
-            artist: "Blind Willie Johnson",
-            url: "https://archive.org/download/LibreMusicCollection_202007/BlindWillieJohnson-GodDontNeverChange.mp3",
-            duration: "3:01"
-        },
-        {
-            title: "The Rain Don't Fall on Me",
-            artist: "Blind Willie Johnson",
-            url: "https://archive.org/download/LibreMusicCollection_202007/BlindWillieJohnson-TheRainDontFallOnMe.mp3",
-            duration: "3:04"
-        },
-        {
-            title: "I'm Not Ashamed",
-            artist: "Blind Joe Taggart",
-            url: "https://archive.org/download/LibreMusicCollection_202007/BlindJoeTaggart-ImNotAshamed.mp3",
-            duration: "2:47"
-        },
-        {
-            title: "He's a Gonner Now",
-            artist: "Blind Joe Taggart",
-            url: "https://archive.org/download/LibreMusicCollection_202007/BlindJoeTaggart-HesAGonnerNow.mp3",
-            duration: "2:51"
-        },
-        {
-            title: "Jesus Is Coming Soon",
-            artist: "Blind Joe Taggart",
-            url: "https://archive.org/download/LibreMusicCollection_202007/BlindJoeTaggart-JesusIsComingSoon.mp3",
-            duration: "2:49"
-        },
-        {
-            title: "Glory to His Name",
-            artist: "Blind Joe Taggart",
-            url: "https://archive.org/download/LibreMusicCollection_202007/BlindJoeTaggart-GloryToHisName.mp3",
-            duration: "2:46"
-        },
-        {
-            title: "I've Got a Mother in Glory",
-            artist: "Blind Joe Taggart",
-            url: "https://archive.org/download/LibreMusicCollection_202007/BlindJoeTaggart-IveGotAMotherInGlory.mp3",
-            duration: "2:55"
-        },
-        {
-            title: "I'm Going Home on the Morning Train",
-            artist: "Blind Joe Taggart",
-            url: "https://archive.org/download/LibreMusicCollection_202007/BlindJoeTaggart-ImGoingHomeOnTheMorningTrain.mp3",
-            duration: "2:42"
-        },
-        {
-            title: "I'm a Pilgrim",
-            artist: "Blind Joe Taggart",
-            url: "https://archive.org/download/LibreMusicCollection_202007/BlindJoeTaggart-ImAPilgrim.mp3",
-            duration: "2:39"
-        },
-        {
-            title: "Precious Memories",
-            artist: "Blind Joe Taggart",
-            url: "https://archive.org/download/LibreMusicCollection_202007/BlindJoeTaggart-PreciousMemories.mp3",
-            duration: "3:00"
-        },
-        {
-            title: "I'll Be Rested When the Roll Is Called",
-            artist: "Blind Joe Taggart",
-            url: "https://archive.org/download/LibreMusicCollection_202007/BlindJoeTaggart-IlBeRestedWhenTheRollIsCalled.mp3",
-            duration: "3:10"
-        },
-        {
-            title: "I'm Pressing On the Upward Way",
-            artist: "Blind Joe Taggart",
-            url: "https://archive.org/download/LibreMusicCollection_202007/BlindJoeTaggart-ImPressingOnTheUpwardWay.mp3",
-            duration: "2:44"
-        },
-        {
-            title: "I've Got a Robe and a Crown",
-            artist: "Blind Joe Taggart",
-            url: "https://archive.org/download/LibreMusicCollection_202007/BlindJoeTaggart-IveGotARobeAndACrown.mp3",
-            duration: "2:52"
-        },
-        {
-            title: "I'm Bound for the Kingdom",
-            artist: "Blind Joe Taggart",
-            url: "https://archive.org/download/LibreMusicCollection_202007/BlindJoeTaggart-ImBoundForTheKingdom.mp3",
-            duration: "2:48"
-        },
-        {
-            title: "I'm Going to Live the Life I Sing About in My Song",
-            artist: "Blind Joe Taggart",
-            url: "https://archive.org/download/LibreMusicCollection_202007/BlindJoeTaggart-ImGoingToLiveTheLifeISingAboutInMySong.mp3",
-            duration: "3:05"
-        }
-    ];
-
-    const audio = new Audio();
-    let isPlaying = false;
-    let currentSongIndex = -1;
-    let songElements = []; // Para actualizar iconos
-
-    // Renderiza las canciones en el grid
-    function renderSongs(songs) {
-        const grid = document.getElementById('songsGrid');
-        grid.innerHTML = '';
-
-        if (songs.length === 0) {
-            grid.innerHTML = `<div class="no-results">No tenemos esa canción :c</div>`;
-            return;
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WILSpq - Repositorio de Canciones</title>
+    <style>
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1a1a1a;
+            --accent: #9d4edd;
+            --accent-light: #b770ff;
+            --text: #ffffff;
+            --blur: rgba(255,255,255,0.08);
+            --border-separator: rgba(255,255,255,0.1);
         }
 
-        songElements = []; // Reiniciar referencias
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-        songs.forEach((song, index) => {
-            const songElement = document.createElement('div');
-            songElement.className = 'song-item';
-            songElement.innerHTML = `
-                <div class="play-icon" id="icon-${index}">▶️</div>
-                <div class="song-info">
-                    <div class="song-title">${song.artist} - ${song.title}</div>
-                    <div class="song-duration">${song.duration}</div>
-                </div>
-            `;
-            songElement.onclick = () => playSong(song.url, song.title, song.artist, index);
-            grid.appendChild(songElement);
-            songElements.push({
-                element: songElement,
-                icon: songElement.querySelector(`#icon-${index}`)
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text);
+            display: grid;
+            grid-template-rows: 80px 1fr 120px;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ===== HEADER ===== */
+        header {
+            background: var(--bg-secondary);
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--blur);
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #b770ff, #7b2cbf);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-bar input {
+            width: 300px;
+            padding: 10px 15px;
+            border-radius: 20px;
+            border: none;
+            background: var(--blur);
+            color: var(--text);
+            backdrop-filter: blur(5px);
+        }
+
+        .search-bar input::placeholder {
+            color: #aaa;
+        }
+
+        .btn-support {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            backdrop-filter: blur(5px);
+            transition: 0.3s;
+        }
+
+        .btn-support:hover {
+            background: var(--accent-light);
+            transform: translateY(-2px);
+        }
+
+        /* ===== MAIN ===== */
+        main {
+            padding: 30px;
+            overflow-y: auto;
+            background: var(--bg-primary);
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin: 30px 0 20px;
+            font-weight: 700;
+        }
+
+        .songs-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0;
+        }
+
+        .song-item {
+            padding: 16px 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid var(--border-separator);
+            transition: 0.2s;
+        }
+
+        .song-item:hover {
+            background: var(--blur);
+        }
+
+        .play-icon {
+            font-size: 1.2rem;
+            color: var(--accent-light);
+            width: 24px;
+            text-align: center;
+        }
+
+        .song-info {
+            flex: 1;
+            font-size: 1rem;
+        }
+
+        .song-title {
+            font-weight: 600;
+        }
+
+        .song-duration {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 40px 20px;
+            font-size: 1.2rem;
+            color: #aaa;
+            grid-column: 1 / -1;
+        }
+
+        /* ===== PLAYER ===== */
+        .player {
+            background: var(--bg-secondary);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: sticky;
+            bottom: 0;
+            backdrop-filter: blur(10px);
+            border-top: 1px solid var(--blur);
+            flex-wrap: wrap;
+        }
+
+        .player-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .player-controls button {
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.2rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+
+        .player-controls button:hover {
+            background: var(--blur);
+        }
+
+        .player-info {
+            flex: 1;
+            min-width: 200px;
+            padding-left: 15px;
+        }
+
+        .player-info h4 {
+            font-size: 1rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .player-info p {
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        /* ===== PLAYER PROGRESS BAR ===== */
+        .player-progress {
+            flex: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            padding: 0 15px;
+            min-width: 300px;
+        }
+
+        .player-progress input[type="range"] {
+            width: 100%;
+            height: 5px;
+            -webkit-appearance: none;
+            background: var(--blur);
+            border-radius: 5px;
+            outline: none;
+            margin: 0;
+        }
+
+        .player-progress input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: var(--accent-light);
+            cursor: pointer;
+            box-shadow: 0 0 5px rgba(183, 112, 255, 0.8);
+        }
+
+        .player-progress input[type="range"]::-moz-range-thumb {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: var(--accent-light);
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 0 5px rgba(183, 112, 255, 0.8);
+        }
+
+        .player-time {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        /* ===== MODAL APOYAR ===== */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.3s;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal {
+            background: var(--bg-secondary);
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            max-width: 400px;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--blur);
+            transform: scale(0.9);
+            transition: 0.3s;
+        }
+
+        .modal-overlay.active .modal {
+            transform: scale(1);
+        }
+
+        .modal h2 {
+            margin-bottom: 20px;
+            color: var(--accent-light);
+        }
+
+        .modal img {
+            width: 200px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+
+        .modal p {
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .modal button {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .songs-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .search-bar input {
+                width: 200px;
+            }
+
+            .player {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .player-controls {
+                justify-content: center;
+            }
+
+            .player-info {
+                text-align: center;
+                padding-left: 0;
+            }
+
+            .player-progress {
+                min-width: auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .search-bar input {
+                width: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <h1 class="logo" onclick="location.reload()">WILSpq</h1>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Buscar canción..." oninput="searchMusic()">
+            <button class="btn-support" onclick="openSupportModal()">Apoyar</button>
+        </div>
+    </header>
+
+    <!-- MAIN -->
+    <main id="mainContent">
+        <h2 class="section-title">Repositorio de Canciones</h2>
+        <div class="songs-grid" id="songsGrid">
+            <!-- Las canciones se generarán dinámicamente -->
+        </div>
+    </main>
+
+    <!-- PLAYER FIJO -->
+    <div class="player">
+        <div class="player-controls">
+            <button onclick="skipSong(-1)">⏮</button>
+            <button id="playPauseButton" onclick="togglePlayPause()">▶️</button>
+            <button onclick="skipSong(1)">⏭</button>
+        </div>
+        <div class="player-progress">
+            <input type="range" id="progressBar" min="0" max="100" value="0" step="0.1" oninput="scrub(this.value)">
+            <div class="player-time">
+                <span id="currentTime">0:00</span> / <span id="totalTime">0:00</span>
+            </div>
+        </div>
+        <div class="player-info">
+            <h4 id="playerTitle">Selecciona una canción</h4>
+            <p id="playerArtist">WILSpq</p>
+        </div>
+    </div>
+
+    <!-- MODAL APOYAR -->
+    <div class="modal-overlay" id="supportModal">
+        <div class="modal">
+            <h2>💜 Apoya a WILSpq</h2>
+            <img src="https://i.imgur.com/placeholderQR.jpg" alt="Código QR de Yape">
+            <p>Escanea este código QR con tu app de Yape para apoyar este proyecto y mantener la música en línea.<br><br>¡Tu apoyo significa mucho! 💜</p>
+            <button onclick="closeSupportModal()">Cerrar</button>
+        </div>
+    </div>
+
+    <script>
+        // ===== LISTA DE CANCIONES =====
+        const songsList = [
+            {
+                title: "My Lord, What a Morning",
+                artist: "Blind Joe Taggart",
+                url: "https://archive.org/download/LibreMusicCollection_202007/BlindJoeTaggart-MyLordWhatAMorning.mp3",
+                duration: "2:45"
+            },
+            {
+                title: "Sweeter As The Days Go By",
+                artist: "Blind Willie Johnson",
+                url: "https://archive.org/download/LibreMusicCollection_202007/BlindWillieJohnson-SweeterAsTheDaysGoBy.mp3",
+                duration: "3:12"
+            },
+            {
+                title: "Dark Was the Night, Cold Was the Ground",
+                artist: "Blind Willie Johnson",
+                url: "https://archive.org/download/LibreMusicCollection_202007/BlindWillieJohnson-DarkWasTheNightColdWasTheGround.mp3",
+                duration: "3:05"
+            },
+            {
+                title: "John the Revelator",
+                artist: "Blind Willie Johnson",
+                url: "https://archive.org/download/LibreMusicCollection_202007/BlindWillieJohnson-JohnTheRevelator.mp3",
+                duration: "3:19"
+            },
+            {
+                title: "God Moves on the Water",
+                artist: "Blind Willie Johnson",
+                url: "https://archive.org/download/LibreMusicCollection_202007/BlindWillieJohnson-GodMovesOnTheWater.mp3",
+                duration: "2:58"
+            },
+            {
+                title: "If I Had My Way I'd Tear the Building Down",
+                artist: "Blind Willie Johnson",
+                url: "https://archive.org/download/LibreMusicCollection_202007/BlindWillieJohnson-IfIHadMyWayIdTearTheBuildingDown.mp3",
+                duration: "3:02"
+            },
+            {
+                title: "Pasitos Para Bailar",
+                artist: "Agua Marina",
+                url: "https://archive.org/download/agua-marina-exitos-de-oro-2014-942/Agua%20Marina%20-%20%C3%89xitos%20De%20Oro%20%282014%29%20-Xendra%20Music%20%2BDesconocido/14.%20Pasitos%20para%20Bailar.mp3",
+                duration: "2:50"
+            },
+            {
+                title: "I'm a Soldier in the Army of the Lord",
+                artist: "Blind Joe Taggart",
+                url: "https://archive.org/download/LibreMusicCollection_202007/BlindJoeTaggart-ImASoldierInTheArmyOfTheLord.mp3",
+                duration: "2:38"
+            },
+            {
+                title: "The Soul of a Man",
+                artist: "Blind Willie Johnson",
+                url: "https://archive.org/download/LibreMusicCollection_202007/BlindWillieJohnson-TheSoulOfAMan.mp3",
+                duration: "3:07"
+            },
+            {
+                title: "It's Nobody's Fault but Mine",
+                artist: "Blind Willie Johnson",
+                url: "https://archive.org/download/LibreMusicCollection_202007/BlindWillieJohnson-ItsNobodySFaultButMine.mp3",
+                duration: "3:15"
+            },
+            {
+                title: "Mother's Children Have a Hard Time",
+                artist: "Blind Willie Johnson",
+                url: "https://archive.org/download/LibreMusicCollection_202007/BlindWillieJohnson-MothersChildrenHaveAHardTime.mp3",
+                duration: "3:00"
+            },
+            {
+                title: "Jesus Make Up My Dying Bed",
+                artist: "Blind Joe Taggart",
+                url: "https://archive.org/download/LibreMusicCollection_202007/BlindJoeTaggart-JesusMakeUpMyDyingBed.mp3",
+                duration: "2:55"
+            },
+            {
+                title: "Bye and Bye I'm Goin' to See the King",
+                artist: "Blind Joe Taggart",
+                url: "https://archive.org/download/LibreMusicCollection_202007/BlindJoeTaggart-ByeAndByeImGoinToSeeTheKing.mp3",
+                duration: "2:40"
+            },
+            {
+                title: "Lord I Just Can't Keep From Crying",
+                artist: "Blind Willie Johnson",
+                url: "https://archive.org/download/LibreMusicCollection_202007/BlindWillieJohnson-LordIJustCantKeepFromCrying.mp3",
+                duration: "3:10"
+            },
+            {
+                title: "You'll Need Somebody on Your Bond",
+                artist: "Blind Willie Johnson",
+                url: "https://archive.org/download/LibreMusicCollection_202007/BlindWillieJohnson-YoullNeedSomebodyOnYourBond.mp3",
+                duration: "2:52"
+            },
+            {
+                title: "I Know His Blood Can Make Me Whole",
+                artist: "Blind Willie Johnson",
+                url: "https://archive.org/download/LibreMusicCollection_202007/BlindWillieJohnson-IKnowHisBloodCanMakeMeWhole.mp3",
+                duration: "2:57"
+            },
+            {
+                title: "Go with Me to That Land",
+                artist: "Blind Joe Taggart",
+                url: "https://archive.org/download/LibreMusicCollection_202007/BlindJoeTaggart-GoWithMeToThatLand.mp3",
+                duration: "2:48"
+            },
+            {
+                title: "I Was Born to Preach the Gospel",
+                artist: "Blind Willie Johnson",
+                url: "https://archive.org/download/LibreMusicCollection_202007/BlindWillieJohnson-IWasBornToPreachTheGospel.mp3",
+                duration: "3:03"
+            },
+            {
+                title: "Keep Your Lamp Trimmed and Burning",
+                artist: "Blind Willie Johnson",
+                url: "https://archive.org/download/LibreMusicCollection_202007/BlindWillieJohnson-KeepYourLampTrimmedAndBurning.mp3",
+                duration: "2:59"
+            },
+            {
+                title: "Can't Nobody Hide from God",
+                artist: "Blind Willie Johnson",
+                url: "https://archive.org/download/LibreMusicCollection_202007/BlindWillieJohnson-CantNobodyHideFromGod.mp3",
+                duration: "3:06"
+            },
+            {
+                title: "Take Your Burden to the Lord",
+                artist: "Blind Joe Taggart",
+                url: "https://archive.org/download/LibreMusicCollection_202007/BlindJoeTaggart-TakeYourBurdenToTheLord.mp3",
+                duration: "2:53"
+            },
+            {
+                title: "When the War Was On",
+                artist: "Blind Willie Johnson",
+                url: "https://archive.org/download/LibreMusicCollection_202007/BlindWillieJohnson-WhenTheWarWasOn.mp3",
+                duration: "3:11"
+            },
+            {
+                title: "Church I'm Fully Saved Today",
+                artist: "Blind Willie Johnson",
+                url: "https://archive.org/download/LibreMusicCollection_202007/BlindWillieJohnson-ChurchImFullySavedToday.mp3",
+                duration: "2:54"
+            },
+            {
+                title: "I'm Gonna Run to the City of Refuge",
+                artist: "Blind Willie Johnson",
+                url: "https://archive.org/download/LibreMusicCollection_202007/BlindWillieJohnson-ImGonnaRunToTheCityOfRefuge.mp3",
+                duration: "3:08"
+            },
+            {
+                title: "Let Your Light Shine on Me",
+                artist: "Blind Willie Johnson",
+                url: "https://archive.org/download/LibreMusicCollection_202007/BlindWillieJohnson-LetYourLightShineOnMe.mp3",
+                duration: "2:56"
+            },
+            {
+                title: "God Don't Never Change",
+                artist: "Blind Willie Johnson",
+                url: "https://archive.org/download/LibreMusicCollection_202007/BlindWillieJohnson-GodDontNeverChange.mp3",
+                duration: "3:01"
+            },
+            {
+                title: "The Rain Don't Fall on Me",
+                artist: "Blind Willie Johnson",
+                url: "https://archive.org/download/LibreMusicCollection_202007/BlindWillieJohnson-TheRainDontFallOnMe.mp3",
+                duration: "3:04"
+            },
+            {
+                title: "I'm Not Ashamed",
+                artist: "Blind Joe Taggart",
+                url: "https://archive.org/download/LibreMusicCollection_202007/BlindJoeTaggart-ImNotAshamed.mp3",
+                duration: "2:47"
+            },
+            {
+                title: "He's a Gonner Now",
+                artist: "Blind Joe Taggart",
+                url: "https://archive.org/download/LibreMusicCollection_202007/BlindJoeTaggart-HesAGonnerNow.mp3",
+                duration: "2:51"
+            },
+            {
+                title: "Jesus Is Coming Soon",
+                artist: "Blind Joe Taggart",
+                url: "https://archive.org/download/LibreMusicCollection_202007/BlindJoeTaggart-JesusIsComingSoon.mp3",
+                duration: "2:49"
+            },
+            {
+                title: "Glory to His Name",
+                artist: "Blind Joe Taggart",
+                url: "https://archive.org/download/LibreMusicCollection_202007/BlindJoeTaggart-GloryToHisName.mp3",
+                duration: "2:46"
+            },
+            {
+                title: "I've Got a Mother in Glory",
+                artist: "Blind Joe Taggart",
+                url: "https://archive.org/download/LibreMusicCollection_202007/BlindJoeTaggart-IveGotAMotherInGlory.mp3",
+                duration: "2:55"
+            },
+            {
+                title: "I'm Going Home on the Morning Train",
+                artist: "Blind Joe Taggart",
+                url: "https://archive.org/download/LibreMusicCollection_202007/BlindJoeTaggart-ImGoingHomeOnTheMorningTrain.mp3",
+                duration: "2:42"
+            },
+            {
+                title: "I'm a Pilgrim",
+                artist: "Blind Joe Taggart",
+                url: "https://archive.org/download/LibreMusicCollection_202007/BlindJoeTaggart-ImAPilgrim.mp3",
+                duration: "2:39"
+            },
+            {
+                title: "Precious Memories",
+                artist: "Blind Joe Taggart",
+                url: "https://archive.org/download/LibreMusicCollection_202007/BlindJoeTaggart-PreciousMemories.mp3",
+                duration: "3:00"
+            },
+            {
+                title: "I'll Be Rested When the Roll Is Called",
+                artist: "Blind Joe Taggart",
+                url: "https://archive.org/download/LibreMusicCollection_202007/BlindJoeTaggart-IlBeRestedWhenTheRollIsCalled.mp3",
+                duration: "3:10"
+            },
+            {
+                title: "I'm Pressing On the Upward Way",
+                artist: "Blind Joe Taggart",
+                url: "https://archive.org/download/LibreMusicCollection_202007/BlindJoeTaggart-ImPressingOnTheUpwardWay.mp3",
+                duration: "2:44"
+            },
+            {
+                title: "I've Got a Robe and a Crown",
+                artist: "Blind Joe Taggart",
+                url: "https://archive.org/download/LibreMusicCollection_202007/BlindJoeTaggart-IveGotARobeAndACrown.mp3",
+                duration: "2:52"
+            },
+            {
+                title: "I'm Bound for the Kingdom",
+                artist: "Blind Joe Taggart",
+                url: "https://archive.org/download/LibreMusicCollection_202007/BlindJoeTaggart-ImBoundForTheKingdom.mp3",
+                duration: "2:48"
+            },
+            {
+                title: "I'm Going to Live the Life I Sing About in My Song",
+                artist: "Blind Joe Taggart",
+                url: "https://archive.org/download/LibreMusicCollection_202007/BlindJoeTaggart-ImGoingToLiveTheLifeISingAboutInMySong.mp3",
+                duration: "3:05"
+            }
+        ];
+
+        const audio = new Audio();
+        let isPlaying = false;
+        let currentSongIndex = -1;
+        let songElements = []; // Para actualizar iconos
+
+        // Renderiza las canciones en el grid
+        function renderSongs(songs) {
+            const grid = document.getElementById('songsGrid');
+            grid.innerHTML = '';
+
+            if (songs.length === 0) {
+                grid.innerHTML = `<div class="no-results">No tenemos esa canción :c</div>`;
+                return;
+            }
+
+            songElements = []; // Reiniciar referencias
+
+            songs.forEach((song, index) => {
+                const songElement = document.createElement('div');
+                songElement.className = 'song-item';
+                songElement.innerHTML = `
+                    <div class="play-icon" id="icon-${index}">▶️</div>
+                    <div class="song-info">
+                        <div class="song-title">${song.artist} - ${song.title}</div>
+                        <div class="song-duration">${song.duration}</div>
+                    </div>
+                `;
+                songElement.onclick = () => playSong(song.url, song.title, song.artist, index);
+                grid.appendChild(songElement);
+                songElements.push({
+                    element: songElement,
+                    icon: songElement.querySelector(`#icon-${index}`)
+                });
+            });
+
+            updateAllIcons(); // Sincronizar iconos tras renderizar
+        }
+
+        // Función para reproducir una canción
+        function playSong(url, title, artist, index) {
+            audio.src = url;
+            audio.play();
+            isPlaying = true;
+            currentSongIndex = index;
+
+            document.getElementById('playerTitle').textContent = title;
+            document.getElementById('playerArtist').textContent = artist;
+
+            updatePlayPauseButton();
+            updateAllIcons();
+            setupProgress();
+        }
+
+        // Alternar reproducción/pausa
+        function togglePlayPause() {
+            if (isPlaying) {
+                audio.pause();
+            } else {
+                audio.play();
+            }
+            isPlaying = !isPlaying;
+
+            updatePlayPauseButton();
+            updateAllIcons();
+        }
+
+        // Actualizar botón de play/pause en el reproductor
+        function updatePlayPauseButton() {
+            const button = document.getElementById('playPauseButton');
+            button.textContent = isPlaying ? '⏸️' : '▶️';
+        }
+
+        // Actualizar todos los iconos de la lista
+        function updateAllIcons() {
+            songElements.forEach((item, i) => {
+                item.icon.textContent = (isPlaying && currentSongIndex === i) ? '⏸️' : '▶️';
+            });
+        }
+
+        // Saltar canción
+        function skipSong(direction) {
+            if (currentSongIndex === -1) return;
+            currentSongIndex += direction;
+            if (currentSongIndex < 0) currentSongIndex = songsList.length - 1;
+            if (currentSongIndex >= songsList.length) currentSongIndex = 0;
+
+            const song = songsList[currentSongIndex];
+            playSong(song.url, song.title, song.artist, currentSongIndex);
+        }
+
+        // Configurar barra de progreso
+        function setupProgress() {
+            const progressBar = document.getElementById('progressBar');
+            const currentTime = document.getElementById('currentTime');
+            const totalTime = document.getElementById('totalTime');
+
+            // Actualizar barra y tiempos
+            audio.addEventListener('timeupdate', () => {
+                if (!audio.duration) return;
+                const percent = (audio.currentTime / audio.duration) * 100;
+                progressBar.value = percent;
+                currentTime.textContent = formatTime(audio.currentTime);
+                totalTime.textContent = formatTime(audio.duration);
+            });
+
+            // Reset al terminar
+            audio.addEventListener('ended', () => {
+                isPlaying = false;
+                updatePlayPauseButton();
+                updateAllIcons();
+            });
+        }
+
+        // Buscar canciones
+        function searchMusic() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            if (!query) {
+                renderInitialSongs();
+                return;
+            }
+
+            const filtered = songsList.filter(song => 
+                song.title.toLowerCase().includes(query) || 
+                song.artist.toLowerCase().includes(query)
+            );
+
+            renderSongs(filtered);
+        }
+
+        // Renderiza las primeras canciones según el dispositivo
+        function renderInitialSongs() {
+            const isMobile = window.innerWidth <= 768;
+            const limit = isMobile ? 20 : 60;
+            renderSongs(songsList.slice(0, limit));
+        }
+
+        // Modal de apoyo
+        function openSupportModal() {
+            document.getElementById('supportModal').classList.add('active');
+        }
+
+        function closeSupportModal() {
+            document.getElementById('supportModal').classList.remove('active');
+        }
+
+        // Función para mover la barra manualmente
+        function scrub(value) {
+            const scrubTime = (value / 100) * audio.duration;
+            audio.currentTime = scrubTime;
+        }
+
+        // Formatear tiempo
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60).toString().padStart(2, '0');
+            return `${mins}:${secs}`;
+        }
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', () => {
+            renderInitialSongs();
+            updatePlayPauseButton(); // Inicia con ▶️
+
+            // Escuchar cambios de estado del audio
+            audio.addEventListener('play', () => {
+                isPlaying = true;
+                updatePlayPauseButton();
+                updateAllIcons();
+            });
+            audio.addEventListener('pause', () => {
+                isPlaying = false;
+                updatePlayPauseButton();
+                updateAllIcons();
             });
         });
 
-        updateAllIcons(); // Sincronizar iconos tras renderizar
-    }
-
-    // Función para reproducir una canción
-    function playSong(url, title, artist, index) {
-        audio.src = url;
-        audio.play();
-        isPlaying = true;
-        currentSongIndex = index;
-
-        document.getElementById('playerTitle').textContent = title;
-        document.getElementById('playerArtist').textContent = artist;
-
-        updatePlayPauseButton();
-        updateAllIcons();
-        setupProgress();
-    }
-
-    // Alternar reproducción/pausa
-    function togglePlayPause() {
-        if (isPlaying) {
-            audio.pause();
-        } else {
-            audio.play();
-        }
-        isPlaying = !isPlaying;
-
-        updatePlayPauseButton();
-        updateAllIcons();
-    }
-
-    // Actualizar botón de play/pause en el reproductor
-    function updatePlayPauseButton() {
-        const button = document.getElementById('playPauseButton');
-        button.textContent = isPlaying ? '⏸️' : '▶️';
-    }
-
-    // Actualizar todos los iconos de la lista
-    function updateAllIcons() {
-        songElements.forEach((item, i) => {
-            item.icon.textContent = (isPlaying && currentSongIndex === i) ? '⏸️' : '▶️';
+        // Re-renderizar al cambiar tamaño de pantalla
+        window.addEventListener('resize', () => {
+            const query = document.getElementById('searchInput').value.trim();
+            if (!query) {
+                renderInitialSongs();
+            }
         });
-    }
+    </script>
 
-    // Saltar canción
-    function skipSong(direction) {
-        if (currentSongIndex === -1) return;
-        currentSongIndex += direction;
-        if (currentSongIndex < 0) currentSongIndex = songsList.length - 1;
-        if (currentSongIndex >= songsList.length) currentSongIndex = 0;
-
-        const song = songsList[currentSongIndex];
-        playSong(song.url, song.title, song.artist, currentSongIndex);
-    }
-
-    // Configurar barra de progreso
-    function setupProgress() {
-        const progressBar = document.getElementById('progressBar');
-        const currentTime = document.getElementById('currentTime');
-        const totalTime = document.getElementById('totalTime');
-
-        // Actualizar barra y tiempos
-        audio.addEventListener('timeupdate', () => {
-            if (!audio.duration) return;
-            const percent = (audio.currentTime / audio.duration) * 100;
-            progressBar.value = percent;
-            currentTime.textContent = formatTime(audio.currentTime);
-            totalTime.textContent = formatTime(audio.duration);
-        });
-
-        // Reset al terminar
-        audio.addEventListener('ended', () => {
-            isPlaying = false;
-            updatePlayPauseButton();
-            updateAllIcons();
-        });
-    }
-
-    // Buscar canciones
-    function searchMusic() {
-        const query = document.getElementById('searchInput').value.toLowerCase().trim();
-        if (!query) {
-            renderInitialSongs();
-            return;
-        }
-
-        const filtered = songsList.filter(song => 
-            song.title.toLowerCase().includes(query) || 
-            song.artist.toLowerCase().includes(query)
-        );
-
-        renderSongs(filtered);
-    }
-
-    // Renderiza las primeras canciones según el dispositivo
-    function renderInitialSongs() {
-        const isMobile = window.innerWidth <= 768;
-        const limit = isMobile ? 20 : 60;
-        renderSongs(songsList.slice(0, limit));
-    }
-
-    // Modal de apoyo
-    function openSupportModal() {
-        document.getElementById('supportModal').classList.add('active');
-    }
-
-    function closeSupportModal() {
-        document.getElementById('supportModal').classList.remove('active');
-    }
-
-    // Función para mover la barra manualmente
-    function scrub(value) {
-        const scrubTime = (value / 100) * audio.duration;
-        audio.currentTime = scrubTime;
-    }
-
-    // Formatear tiempo
-    function formatTime(seconds) {
-        const mins = Math.floor(seconds / 60);
-        const secs = Math.floor(seconds % 60).toString().padStart(2, '0');
-        return `${mins}:${secs}`;
-    }
-
-    // Inicializar
-    document.addEventListener('DOMContentLoaded', () => {
-        renderInitialSongs();
-        updatePlayPauseButton(); // Inicia con ▶️
-
-        // Escuchar cambios de estado del audio
-        audio.addEventListener('play', () => {
-            isPlaying = true;
-            updatePlayPauseButton();
-            updateAllIcons();
-        });
-        audio.addEventListener('pause', () => {
-            isPlaying = false;
-            updatePlayPauseButton();
-            updateAllIcons();
-        });
-    });
-
-    // Re-renderizar al cambiar tamaño de pantalla
-    window.addEventListener('resize', () => {
-        const query = document.getElementById('searchInput').value.trim();
-        if (!query) {
-            renderInitialSongs();
-        }
-    });
-</script>
+</body>
+</html>
