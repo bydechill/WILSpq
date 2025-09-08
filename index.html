@@ -159,6 +159,24 @@
         }
 
         /* ===== PLAYER ===== */
+        .player-wrapper {
+            position: relative;
+            width: 100%;
+            z-index: 10;
+        }
+
+        .player-progress-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: var(--accent-light);
+            z-index: 2;
+            pointer-events: none;
+            transition: width 0.1s ease;
+        }
+
         .player {
             background: var(--bg-secondary);
             padding: 15px 20px;
@@ -170,25 +188,8 @@
             backdrop-filter: blur(10px);
             border-top: 1px solid var(--blur);
             flex-wrap: wrap;
-            z-index: 10;
-        }
-
-        /* Barra de progreso en el borde superior — ESTILO YOUTUBE MUSIC */
-        .player::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 0%;
-            height: 3px;
-            background: var(--accent-light);
-            transition: width 0.1s ease;
-            pointer-events: none;
-            z-index: 2;
-        }
-
-        .player.progress-active::before {
-            width: var(--progress-percent, 0%);
+            z-index: 1;
+            position: relative;
         }
 
         .player-controls {
@@ -325,7 +326,7 @@
                 align-items: stretch;
             }
 
-            .player::before {
+            .player-progress-bar {
                 height: 2px;
             }
 
@@ -382,19 +383,22 @@
         </div>
     </main>
 
-    <!-- PLAYER FIJO -->
-    <div class="player" id="playerContainer">
-        <div class="player-controls">
-            <button onclick="skipSong(-1)">⏮</button>
-            <button id="playPauseButton" onclick="togglePlayPause()">▶️</button>
-            <button onclick="skipSong(1)">⏭</button>
-        </div>
-        <div class="player-info">
-            <h4 id="playerTitle">Selecciona una canción</h4>
-            <p id="playerArtist">WILSpq</p>
-        </div>
-        <div class="player-time">
-            <span id="currentTime">0:00</span> / <span id="totalTime">0:00</span>
+    <!-- PLAYER FIJO CON BARRA DE PROGRESO EN BORDE SUPERIOR -->
+    <div class="player-wrapper">
+        <div class="player-progress-bar" id="progressBarVisual"></div>
+        <div class="player" id="playerContainer">
+            <div class="player-controls">
+                <button onclick="skipSong(-1)">⏮</button>
+                <button id="playPauseButton" onclick="togglePlayPause()">▶️</button>
+                <button onclick="skipSong(1)">⏭</button>
+            </div>
+            <div class="player-info">
+                <h4 id="playerTitle">Selecciona una canción</h4>
+                <p id="playerArtist">WILSpq</p>
+            </div>
+            <div class="player-time">
+                <span id="currentTime">0:00</span> / <span id="totalTime">0:00</span>
+            </div>
         </div>
     </div>
 
@@ -656,8 +660,8 @@
         const audio = new Audio();
         let isPlaying = false;
         let currentSongIndex = -1;
-        let songElements = []; // Para actualizar iconos
-        const playerContainer = document.getElementById('playerContainer');
+        let songElements = [];
+        const progressBarVisual = document.getElementById('progressBarVisual');
 
         // Renderiza las canciones en el grid
         function renderSongs(songs) {
@@ -669,7 +673,7 @@
                 return;
             }
 
-            songElements = []; // Reiniciar referencias
+            songElements = [];
 
             songs.forEach((song, index) => {
                 const songElement = document.createElement('div');
@@ -689,7 +693,7 @@
                 });
             });
 
-            updateAllIcons(); // Sincronizar iconos tras renderizar
+            updateAllIcons();
         }
 
         // Función para reproducir una canción
@@ -704,7 +708,6 @@
 
             updatePlayPauseButton();
             updateAllIcons();
-            setupProgress();
         }
 
         // Alternar reproducción/pausa
@@ -744,34 +747,9 @@
             playSong(song.url, song.title, song.artist, currentSongIndex);
         }
 
-        // Configurar barra de progreso en el borde
-        function setupProgress() {
-            const currentTime = document.getElementById('currentTime');
-            const totalTime = document.getElementById('totalTime');
-
-            audio.addEventListener('timeupdate', () => {
-                if (!audio.duration) return;
-                const percent = (audio.currentTime / audio.duration) * 100;
-                playerContainer.style.setProperty('--progress-percent', percent.toFixed(2));
-                playerContainer.classList.add('progress-active');
-                currentTime.textContent = formatTime(audio.currentTime);
-                totalTime.textContent = formatTime(audio.duration);
-            });
-
-            audio.addEventListener('ended', () => {
-                isPlaying = false;
-                updatePlayPauseButton();
-                updateAllIcons();
-                playerContainer.classList.remove('progress-active');
-            });
-
-            audio.addEventListener('pause', () => {
-                playerContainer.classList.remove('progress-active');
-            });
-
-            audio.addEventListener('play', () => {
-                playerContainer.classList.add('progress-active');
-            });
+        // Actualizar barra visual de progreso
+        function updateProgressBar(percent) {
+            progressBarVisual.style.width = `${percent}%`;
         }
 
         // Buscar canciones
@@ -816,20 +794,35 @@
         // Inicializar
         document.addEventListener('DOMContentLoaded', () => {
             renderInitialSongs();
-            updatePlayPauseButton(); // Inicia con ▶️
+            updatePlayPauseButton();
 
-            // Escuchar cambios de estado del audio
-            audio.addEventListener('play', () => {
-                isPlaying = true;
-                updatePlayPauseButton();
-                updateAllIcons();
-                playerContainer.classList.add('progress-active');
+            // Actualizar progreso
+            audio.addEventListener('timeupdate', () => {
+                if (!audio.duration) return;
+                const percent = (audio.currentTime / audio.duration) * 100;
+                updateProgressBar(percent);
+                document.getElementById('currentTime').textContent = formatTime(audio.currentTime);
+                document.getElementById('totalTime').textContent = formatTime(audio.duration);
             });
+
+            // Al pausar o terminar, mantener barra visible pero sin animación de progreso activa
             audio.addEventListener('pause', () => {
                 isPlaying = false;
                 updatePlayPauseButton();
                 updateAllIcons();
-                playerContainer.classList.remove('progress-active');
+            });
+
+            audio.addEventListener('play', () => {
+                isPlaying = true;
+                updatePlayPauseButton();
+                updateAllIcons();
+            });
+
+            audio.addEventListener('ended', () => {
+                isPlaying = false;
+                updatePlayPauseButton();
+                updateAllIcons();
+                updateProgressBar(0);
             });
         });
 
