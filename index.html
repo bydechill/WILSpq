@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WILSpq - Música Libre</title>
+    <style>
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1a1a1a;
+            --accent: #9d4edd;
+            --accent-light: #b770ff;
+            --text: #ffffff;
+            --blur: rgba(255,255,255,0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text);
+            display: grid;
+            grid-template-rows: 80px 1fr 80px;
+            grid-template-columns: 240px 1fr;
+            grid-template-areas:
+                "header header"
+                "sidebar main"
+                "player player";
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ===== HEADER ===== */
+        header {
+            grid-area: header;
+            background: var(--bg-secondary);
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--blur);
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #b770ff, #7b2cbf);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-bar input {
+            width: 300px;
+            padding: 10px 15px;
+            border-radius: 20px;
+            border: none;
+            background: var(--blur);
+            color: var(--text);
+            backdrop-filter: blur(5px);
+        }
+
+        .search-bar input::placeholder {
+            color: #aaa;
+        }
+
+        .btn-support {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            backdrop-filter: blur(5px);
+            transition: 0.3s;
+        }
+
+        .btn-support:hover {
+            background: var(--accent-light);
+            transform: translateY(-2px);
+        }
+
+        /* ===== SIDEBAR ===== */
+        aside {
+            grid-area: sidebar;
+            background: var(--bg-secondary);
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            position: sticky;
+            top: 80px;
+            height: calc(100vh - 160px);
+            overflow-y: auto;
+            backdrop-filter: blur(5px);
+            border-right: 1px solid var(--blur);
+        }
+
+        .nav-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-item:hover {
+            background: var(--blur);
+        }
+
+        .nav-item.active {
+            background: var(--accent);
+            color: white;
+        }
+
+        /* ===== MAIN ===== */
+        main {
+            grid-area: main;
+            padding: 30px;
+            overflow-y: auto;
+            background: var(--bg-primary);
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin: 30px 0 20px;
+            font-weight: 700;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: var(--blur);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(157, 78, 221, 0.3);
+        }
+
+        .card img {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .card p {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        /* ===== PLAYER ===== */
+        .player {
+            grid-area: player;
+            background: var(--bg-secondary);
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: sticky;
+            bottom: 0;
+            backdrop-filter: blur(10px);
+            border-top: 1px solid var(--blur);
+        }
+
+        .player-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex: 1;
+        }
+
+        .player-left img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+
+        .player-info h4 {
+            font-size: 1rem;
+        }
+
+        .player-info p {
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        .player-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex: 2;
+            justify-content: center;
+        }
+
+        .player-controls button {
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.2rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+
+        .player-controls button:hover {
+            background: var(--blur);
+        }
+
+        .player-time {
+            flex: 1;
+            text-align: right;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* ===== MODAL APOYAR ===== */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.3s;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal {
+            background: var(--bg-secondary);
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            max-width: 400px;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--blur);
+            transform: scale(0.9);
+            transition: 0.3s;
+        }
+
+        .modal-overlay.active .modal {
+            transform: scale(1);
+        }
+
+        .modal h2 {
+            margin-bottom: 20px;
+            color: var(--accent-light);
+        }
+
+        .modal img {
+            width: 200px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+
+        .modal p {
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .modal button {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            body {
+                grid-template-columns: 80px 1fr;
+            }
+            .logo { font-size: 1.5rem; }
+            .search-bar input { width: 200px; }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                grid-template-rows: 70px 1fr 80px;
+                grid-template-columns: 1fr;
+                grid-template-areas:
+                    "header"
+                    "main"
+                    "player";
+            }
+            aside { display: none; }
+            .search-bar input { width: 150px; }
+            .grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+        }
+
+        @media (max-width: 480px) {
+            .search-bar input { width: 100px; }
+            .player-left { display: none; }
+            .player-controls { flex: 1; justify-content: center; }
+            .player-time { display: none; }
+        }
+
+        @media (min-width: 1920px) {
+            .grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+        }
+
+        /* TV MODE */
+        @media (min-width: 2560px) {
+            body { font-size: 1.2rem; }
+            .section-title { font-size: 2.2rem; }
+            .card { padding: 30px; }
+            .card h3 { font-size: 1.3rem; }
+            .player-left img { width: 80px; height: 80px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <h1 class="logo" onclick="location.reload()">WILSpq</h1>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Buscar canciones, álbumes, artistas..." oninput="searchMusic()">
+            <button class="btn-support" onclick="openSupportModal()">Apoyar</button>
+        </div>
+    </header>
+
+    <!-- SIDEBAR -->
+    <aside>
+        <div class="nav-item active" onclick="showSection('inicio')">Inicio</div>
+        <div class="nav-item" onclick="showSection('canciones')">Canciones</div>
+        <div class="nav-item" onclick="showSection('albumes')">Álbumes</div>
+        <div class="nav-item" onclick="showSection('artistas')">Artistas</div>
+    </aside>
+
+    <!-- MAIN -->
+    <main id="mainContent">
+        <!-- SECCIÓN INICIO -->
+        <div id="inicio" class="section active">
+            <h2 class="section-title">Canciones Recientes</h2>
+            <div class="grid" id="recentSongs">
+                <!-- EJEMPLO -->
+                <div class="card" onclick="playSong('https://archive.org/download/LibreMusicCollection_202007/BlindJoeTaggart-MyLordWhatAMorning.mp3', 'My Lord, What a Morning', 'Blind Joe Taggart', 'https://i.imgur.com/placeholder.jpg')">
+                    <img src="https://i.imgur.com/placeholder.jpg" alt="Portada">
+                    <h3>My Lord, What a Morning</h3>
+                    <p>Blind Joe Taggart</p>
+                </div>
+            </div>
+
+            <h2 class="section-title">Álbumes Recientes</h2>
+            <div class="grid" id="recentAlbums">
+                <!-- EJEMPLO -->
+                <div class="card" onclick="showSection('album-detalle-1')">
+                    <img src="https://i.imgur.com/placeholder2.jpg" alt="Portada">
+                    <h3>Álbum Espiritual Vol.1</h3>
+                    <p>Blind Joe Taggart</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN CANCIONES -->
+        <div id="canciones" class="section">
+            <h2 class="section-title">Todas las Canciones</h2>
+            <div class="grid" id="allSongs">
+                <!-- ESTRUCTURA EDITABLE - BUSCAR CON Ctrl+F "CANCIONES LISTADO" -->
+                <!-- ARTISTA: Blind Joe Taggart -->
+                <div class="card" onclick="playSong('https://archive.org/download/LibreMusicCollection_202007/BlindJoeTaggart-MyLordWhatAMorning.mp3', 'My Lord, What a Morning', 'Blind Joe Taggart', 'https://i.imgur.com/placeholder.jpg')">
+                    <img src="https://i.imgur.com/placeholder.jpg" alt="Portada">
+                    <h3>My Lord, What a Morning</h3>
+                    <p>Blind Joe Taggart</p>
+                </div>
+                <div class="card" onclick="playSong('https://archive.org/download/LibreMusicCollection_202007/BlindWillieJohnson-SweeterAsTheDaysGoBy.mp3', 'Sweeter As The Days Go By', 'Blind Willie Johnson', 'https://i.imgur.com/placeholder3.jpg')">
+                    <img src="https://i.imgur.com/placeholder3.jpg" alt="Portada">
+                    <h3>Sweeter As The Days Go By</h3>
+                    <p>Blind Willie Johnson</p>
+                </div>
+                <!-- AGREGA MÁS CANCIONES AQUÍ -->
+            </div>
+        </div>
+
+        <!-- SECCIÓN ÁLBUMES -->
+        <div id="albumes" class="section">
+            <h2 class="section-title">Todos los Álbumes</h2>
+            <div class="grid" id="allAlbums">
+                <!-- ESTRUCTURA EDITABLE - BUSCAR CON Ctrl+F "ALBUMES LISTADO" -->
+                <!-- ARTISTA: Blind Joe Taggart -->
+                <div class="card" onclick="showSection('album-detalle-1')">
+                    <img src="https://i.imgur.com/placeholder2.jpg" alt="Portada">
+                    <h3>Álbum Espiritual Vol.1</h3>
+                    <p>Blind Joe Taggart</p>
+                </div>
+                <!-- AGREGA MÁS ÁLBUMES AQUÍ -->
+            </div>
+        </div>
+
+        <!-- DETALLE ÁLBUM 1 -->
+        <div id="album-detalle-1" class="section">
+            <h2 class="section-title">Álbum Espiritual Vol.1 - Blind Joe Taggart</h2>
+            <div class="grid" id="songsAlbum1">
+                <div class="card" onclick="playSong('https://archive.org/download/LibreMusicCollection_202007/BlindJoeTaggart-MyLordWhatAMorning.mp3', 'My Lord, What a Morning', 'Blind Joe Taggart', 'https://i.imgur.com/placeholder2.jpg')">
+                    <img src="https://i.imgur.com/placeholder2.jpg" alt="Portada">
+                    <h3>My Lord, What a Morning</h3>
+                    <p>02:45</p>
+                </div>
+                <!-- AGREGA MÁS CANCIONES DEL ÁLBUM AQUÍ -->
+            </div>
+            <button class="btn-support" style="margin: 30px auto; display: block;" onclick="showSection('albumes')">← Volver a Álbumes</button>
+        </div>
+
+        <!-- SECCIÓN ARTISTAS -->
+        <div id="artistas" class="section">
+            <h2 class="section-title">Artistas</h2>
+            <div class="grid" id="allArtists">
+                <!-- ESTRUCTURA EDITABLE - BUSCAR CON Ctrl+F "ARTISTAS LISTADO" -->
+                <div class="card" onclick="showSection('artista-detalle-1')">
+                    <img src="https://i.imgur.com/placeholder.jpg" alt="Portada">
+                    <h3>Blind Joe Taggart</h3>
+                    <p>1 Álbum • 3 Canciones</p>
+                </div>
+                <div class="card" onclick="showSection('artista-detalle-2')">
+                    <img src="https://i.imgur.com/placeholder3.jpg" alt="Portada">
+                    <h3>Blind Willie Johnson</h3>
+                    <p>2 Álbumes • 5 Canciones</p>
+                </div>
+                <!-- AGREGA MÁS ARTISTAS AQUÍ -->
+            </div>
+        </div>
+
+        <!-- DETALLE ARTISTA 1 -->
+        <div id="artista-detalle-1" class="section">
+            <h2 class="section-title">Blind Joe Taggart</h2>
+            <div class="grid">
+                <div class="card" onclick="showSection('album-detalle-1')">
+                    <img src="https://i.imgur.com/placeholder2.jpg" alt="Portada">
+                    <h3>Álbum Espiritual Vol.1</h3>
+                    <p>6 canciones • 1927</p>
+                </div>
+                <!-- AGREGA MÁS ÁLBUMES DEL ARTISTA AQUÍ -->
+            </div>
+            <button class="btn-support" style="margin: 30px auto; display: block;" onclick="showSection('artistas')">← Volver a Artistas</button>
+        </div>
+
+        <!-- DETALLE ARTISTA 2 -->
+        <div id="artista-detalle-2" class="section">
+            <h2 class="section-title">Blind Willie Johnson</h2>
+            <div class="grid">
+                <div class="card" onclick="playSong('https://archive.org/download/LibreMusicCollection_202007/BlindWillieJohnson-SweeterAsTheDaysGoBy.mp3', 'Sweeter As The Days Go By', 'Blind Willie Johnson', 'https://i.imgur.com/placeholder3.jpg')">
+                    <img src="https://i.imgur.com/placeholder3.jpg" alt="Portada">
+                    <h3>Sweeter As The Days Go By</h3>
+                    <p>Single • 1928</p>
+                </div>
+                <!-- AGREGA MÁS CONTENIDO DEL ARTISTA AQUÍ -->
+            </div>
+            <button class="btn-support" style="margin: 30px auto; display: block;" onclick="showSection('artistas')">← Volver a Artistas</button>
+        </div>
+    </main>
+
+    <!-- PLAYER FIJO -->
+    <div class="player">
+        <div class="player-left">
+            <img id="playerCover" src="https://i.imgur.com/placeholder.jpg" alt="Portada">
+            <div class="player-info">
+                <h4 id="playerTitle">Selecciona una canción</h4>
+                <p id="playerArtist">WILSpq</p>
+            </div>
+        </div>
+        <div class="player-controls">
+            <button onclick="skipSong(-1)">⏮</button>
+            <button onclick="togglePlayPause()">⏯</button>
+            <button onclick="skipSong(1)">⏭</button>
+        </div>
+        <div class="player-time" id="playerTime">0:00 / 0:00</div>
+    </div>
+
+    <!-- MODAL APOYAR -->
+    <div class="modal-overlay" id="supportModal">
+        <div class="modal">
+            <h2>💜 Apoya a WILSpq</h2>
+            <img src="https://i.imgur.com/placeholderQR.jpg" alt="Código QR de Yape">
+            <p>Escanea este código QR con tu app de Yape para apoyar este proyecto y mantener la música en línea.<br><br>¡Tu apoyo significa mucho! 💜</p>
+            <button onclick="closeSupportModal()">Cerrar</button>
+        </div>
+    </div>
+
+    <script>
+        // ===== FUNCIONES PRINCIPALES =====
+        let currentSongIndex = -1;
+        let songsList = [
+            {
+                title: "My Lord, What a Morning",
+                artist: "Blind Joe Taggart",
+                url: "https://archive.org/download/LibreMusicCollection_202007/BlindJoeTaggart-MyLordWhatAMorning.mp3",
+                cover: "https://i.imgur.com/placeholder.jpg",
+                duration: "2:45"
+            },
+            {
+                title: "Sweeter As The Days Go By",
+                artist: "Blind Willie Johnson",
+                url: "https://archive.org/download/LibreMusicCollection_202007/BlindWillieJohnson-SweeterAsTheDaysGoBy.mp3",
+                cover: "https://i.imgur.com/placeholder3.jpg",
+                duration: "3:12"
+            }
+            // AGREGA MÁS CANCIONES AQUÍ PARA QUE EL BUSCADOR LAS ENCUENTRE
+        ];
+
+        const audio = new Audio();
+        let isPlaying = false;
+
+        function playSong(url, title, artist, cover) {
+            audio.src = url;
+            audio.play();
+            isPlaying = true;
+
+            document.getElementById('playerTitle').textContent = title;
+            document.getElementById('playerArtist').textContent = artist;
+            document.getElementById('playerCover').src = cover;
+
+            // Buscar índice
+            currentSongIndex = songsList.findIndex(s => s.url === url);
+
+            // Actualizar tiempo (simulado)
+            updatePlayerTime();
+        }
+
+        function togglePlayPause() {
+            if (isPlaying) {
+                audio.pause();
+            } else {
+                audio.play();
+            }
+            isPlaying = !isPlaying;
+        }
+
+        function skipSong(direction) {
+            if (currentSongIndex === -1) return;
+            currentSongIndex += direction;
+            if (currentSongIndex < 0) currentSongIndex = songsList.length - 1;
+            if (currentSongIndex >= songsList.length) currentSongIndex = 0;
+
+            const song = songsList[currentSongIndex];
+            playSong(song.url, song.title, song.artist, song.cover);
+        }
+
+        function updatePlayerTime() {
+            setInterval(() => {
+                if (!audio.duration) return;
+                const current = formatTime(audio.currentTime);
+                const total = formatTime(audio.duration);
+                document.getElementById('playerTime').textContent = `${current} / ${total}`;
+            }, 1000);
+        }
+
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60).toString().padStart(2, '0');
+            return `${mins}:${secs}`;
+        }
+
+        function showSection(sectionId) {
+            // Ocultar todas
+            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+            // Mostrar la seleccionada
+            document.getElementById(sectionId).classList.add('active');
+
+            // Desactivar todos los nav-items
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            // Activar el correspondiente (si existe)
+            const activeNavItem = [...document.querySelectorAll('.nav-item')].find(item => item.textContent.trim().toLowerCase() === sectionId);
+            if (activeNavItem) activeNavItem.classList.add('active');
+        }
+
+        function searchMusic() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            if (!query) return;
+
+            const found = songsList.find(s => s.title.toLowerCase().includes(query) || s.artist.toLowerCase().includes(query));
+            if (found) {
+                playSong(found.url, found.title, found.artist, found.cover);
+                document.getElementById('searchInput').value = ''; // limpiar
+            }
+        }
+
+        function openSupportModal() {
+            document.getElementById('supportModal').classList.add('active');
+        }
+
+        function closeSupportModal() {
+            document.getElementById('supportModal').classList.remove('active');
+        }
+
+        // Inicializar
+        showSection('inicio');
+    </script>
+
+</body>
+</html>
+
+
