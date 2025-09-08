@@ -25,10 +25,7 @@
         body {
             background-color: var(--bg-primary);
             color: var(--text);
-            display: grid;
-            grid-template-rows: 80px 1fr auto;
-            min-height: 100vh;
-            overflow-x: hidden;
+            padding-bottom: 90px; /* Espacio para el reproductor fijo */
         }
 
         /* ===== HEADER ===== */
@@ -43,6 +40,7 @@
             z-index: 100;
             backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--blur);
+            height: 80px;
         }
 
         .logo {
@@ -99,8 +97,7 @@
         /* ===== MAIN ===== */
         main {
             padding: 30px;
-            overflow-y: auto;
-            background: var(--bg-primary);
+            min-height: calc(100vh - 170px); /* Ajuste por header + player */
         }
 
         .section-title {
@@ -158,23 +155,22 @@
             grid-column: 1 / -1;
         }
 
-        /* ===== PLAYER ===== */
+        /* ===== PLAYER FIJO (POPUP STYLE) ===== */
         .player-wrapper {
-            position: relative;
+            position: fixed;
+            bottom: 0;
+            left: 0;
             width: 100%;
-            z-index: 10;
+            z-index: 100;
         }
 
         .player-progress-bar {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 0%;
             height: 3px;
             background: var(--accent-light);
-            z-index: 2;
-            pointer-events: none;
+            width: 0%;
             transition: width 0.1s ease;
+            position: relative;
+            z-index: 2;
         }
 
         .player {
@@ -183,12 +179,10 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            position: sticky;
-            bottom: 0;
             backdrop-filter: blur(10px);
             border-top: 1px solid var(--blur);
+            position: relative;
             z-index: 1;
-            width: 100%;
         }
 
         .player-left {
@@ -240,6 +234,8 @@
             justify-content: center;
             border-radius: 50%;
             transition: 0.3s;
+            z-index: 3; /* ¡IMPORTANTE! Para que no lo tape el input */
+            position: relative;
         }
 
         .player-controls button:hover {
@@ -251,6 +247,18 @@
             opacity: 0.8;
             margin-left: 15px;
             white-space: nowrap;
+        }
+
+        /* Input invisible para arrastrar la barra */
+        .progress-input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+            z-index: 2; /* Debajo de los botones */
         }
 
         /* Ocultar tiempo en móvil */
@@ -271,7 +279,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 1000;
+            z-index: 200;
             opacity: 0;
             pointer-events: none;
             transition: 0.3s;
@@ -378,22 +386,6 @@
                 font-size: 1.1rem;
             }
         }
-
-        /* ===== BARRA DE PROGRESO INTERACTIVA ===== */
-        .progress-input {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            cursor: pointer;
-            z-index: 3;
-        }
-
-        .player-wrapper {
-            position: relative;
-        }
     </style>
 </head>
 <body>
@@ -415,11 +407,11 @@
         </div>
     </main>
 
-    <!-- PLAYER FIJO CON BARRA DE PROGRESO EN BORDE SUPERIOR -->
-    <div class="player-wrapper" id="playerWrapper">
+    <!-- PLAYER FIJO (POPUP STYLE) -->
+    <div class="player-wrapper">
         <div class="player-progress-bar" id="progressBarVisual"></div>
-        <input type="range" class="progress-input" id="progressInput" min="0" max="100" value="0" step="0.1" oninput="scrub(this.value)">
         <div class="player" id="playerContainer">
+            <input type="range" class="progress-input" id="progressInput" min="0" max="100" value="0" step="0.1" oninput="scrub(this.value)">
             <div class="player-left">
                 <div class="player-info">
                     <h4 id="playerTitle">Selecciona una canción</h4>
