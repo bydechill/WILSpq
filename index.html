@@ -26,7 +26,7 @@
             background-color: var(--bg-primary);
             color: var(--text);
             display: grid;
-            grid-template-rows: 80px 1fr 120px;
+            grid-template-rows: 80px 1fr auto;
             min-height: 100vh;
             overflow-x: hidden;
         }
@@ -170,12 +170,32 @@
             backdrop-filter: blur(10px);
             border-top: 1px solid var(--blur);
             flex-wrap: wrap;
+            z-index: 10;
+        }
+
+        /* Barra de progreso en el borde superior — ESTILO YOUTUBE MUSIC */
+        .player::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: var(--accent-light);
+            transition: width 0.1s ease;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .player.progress-active::before {
+            width: var(--progress-percent, 0%);
         }
 
         .player-controls {
             display: flex;
             align-items: center;
             gap: 15px;
+            flex-shrink: 0;
         }
 
         .player-controls button {
@@ -200,7 +220,8 @@
         .player-info {
             flex: 1;
             min-width: 200px;
-            padding-left: 15px;
+            padding: 0 15px;
+            overflow: hidden;
         }
 
         .player-info h4 {
@@ -208,61 +229,20 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            margin: 0;
         }
 
         .player-info p {
             font-size: 0.85rem;
             opacity: 0.8;
-        }
-
-        /* ===== PLAYER PROGRESS BAR ===== */
-        .player-progress {
-            flex: 2;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
-            padding: 0 15px;
-            min-width: 300px;
-        }
-
-        .player-progress input[type="range"] {
-            width: 100%;
-            height: 5px;
-            -webkit-appearance: none;
-            background: var(--blur);
-            border-radius: 5px;
-            outline: none;
-            margin: 0;
-        }
-
-        .player-progress input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 15px;
-            height: 15px;
-            border-radius: 50%;
-            background: var(--accent-light);
-            cursor: pointer;
-            box-shadow: 0 0 5px rgba(183, 112, 255, 0.8);
-        }
-
-        .player-progress input[type="range"]::-moz-range-thumb {
-            width: 15px;
-            height: 15px;
-            border-radius: 50%;
-            background: var(--accent-light);
-            cursor: pointer;
-            border: none;
-            box-shadow: 0 0 5px rgba(183, 112, 255, 0.8);
+            margin: 2px 0 0;
         }
 
         .player-time {
             font-size: 0.9rem;
             opacity: 0.8;
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-            max-width: 300px;
+            flex-shrink: 0;
+            white-space: nowrap;
         }
 
         /* ===== MODAL APOYAR ===== */
@@ -340,27 +320,45 @@
             }
 
             .player {
+                padding: 12px 15px;
                 flex-direction: column;
                 align-items: stretch;
             }
 
+            .player::before {
+                height: 2px;
+            }
+
             .player-controls {
+                order: 2;
                 justify-content: center;
+                margin-top: 8px;
             }
 
             .player-info {
                 text-align: center;
-                padding-left: 0;
+                padding: 0;
+                order: 1;
             }
 
-            .player-progress {
-                min-width: auto;
+            .player-time {
+                order: 3;
+                margin-top: 8px;
+                text-align: center;
             }
         }
 
         @media (max-width: 480px) {
             .search-bar input {
                 width: 150px;
+            }
+
+            .player-info h4 {
+                font-size: 0.95rem;
+            }
+
+            .player-info p {
+                font-size: 0.8rem;
             }
         }
     </style>
@@ -385,21 +383,18 @@
     </main>
 
     <!-- PLAYER FIJO -->
-    <div class="player">
+    <div class="player" id="playerContainer">
         <div class="player-controls">
             <button onclick="skipSong(-1)">⏮</button>
             <button id="playPauseButton" onclick="togglePlayPause()">▶️</button>
             <button onclick="skipSong(1)">⏭</button>
         </div>
-        <div class="player-progress">
-            <input type="range" id="progressBar" min="0" max="100" value="0" step="0.1" oninput="scrub(this.value)">
-            <div class="player-time">
-                <span id="currentTime">0:00</span> / <span id="totalTime">0:00</span>
-            </div>
-        </div>
         <div class="player-info">
             <h4 id="playerTitle">Selecciona una canción</h4>
             <p id="playerArtist">WILSpq</p>
+        </div>
+        <div class="player-time">
+            <span id="currentTime">0:00</span> / <span id="totalTime">0:00</span>
         </div>
     </div>
 
@@ -662,6 +657,7 @@
         let isPlaying = false;
         let currentSongIndex = -1;
         let songElements = []; // Para actualizar iconos
+        const playerContainer = document.getElementById('playerContainer');
 
         // Renderiza las canciones en el grid
         function renderSongs(songs) {
@@ -748,26 +744,33 @@
             playSong(song.url, song.title, song.artist, currentSongIndex);
         }
 
-        // Configurar barra de progreso
+        // Configurar barra de progreso en el borde
         function setupProgress() {
-            const progressBar = document.getElementById('progressBar');
             const currentTime = document.getElementById('currentTime');
             const totalTime = document.getElementById('totalTime');
 
-            // Actualizar barra y tiempos
             audio.addEventListener('timeupdate', () => {
                 if (!audio.duration) return;
                 const percent = (audio.currentTime / audio.duration) * 100;
-                progressBar.value = percent;
+                playerContainer.style.setProperty('--progress-percent', percent.toFixed(2));
+                playerContainer.classList.add('progress-active');
                 currentTime.textContent = formatTime(audio.currentTime);
                 totalTime.textContent = formatTime(audio.duration);
             });
 
-            // Reset al terminar
             audio.addEventListener('ended', () => {
                 isPlaying = false;
                 updatePlayPauseButton();
                 updateAllIcons();
+                playerContainer.classList.remove('progress-active');
+            });
+
+            audio.addEventListener('pause', () => {
+                playerContainer.classList.remove('progress-active');
+            });
+
+            audio.addEventListener('play', () => {
+                playerContainer.classList.add('progress-active');
             });
         }
 
@@ -803,12 +806,6 @@
             document.getElementById('supportModal').classList.remove('active');
         }
 
-        // Función para mover la barra manualmente
-        function scrub(value) {
-            const scrubTime = (value / 100) * audio.duration;
-            audio.currentTime = scrubTime;
-        }
-
         // Formatear tiempo
         function formatTime(seconds) {
             const mins = Math.floor(seconds / 60);
@@ -826,11 +823,13 @@
                 isPlaying = true;
                 updatePlayPauseButton();
                 updateAllIcons();
+                playerContainer.classList.add('progress-active');
             });
             audio.addEventListener('pause', () => {
                 isPlaying = false;
                 updatePlayPauseButton();
                 updateAllIcons();
+                playerContainer.classList.remove('progress-active');
             });
         });
 
